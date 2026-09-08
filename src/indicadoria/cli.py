@@ -32,9 +32,14 @@ def construir_parser() -> argparse.ArgumentParser:
         help="Caminho do Excel de saida (padrao: saida/indicadores_consolidados.xlsx).",
     )
     parser.add_argument(
-        "--modelo",
+        "--modelo-gemini",
+        default="gemini-flash-lite-latest",
+        help="Modelo do Gemini usado para o resumo, quando GEMINI_API_KEY estiver definido.",
+    )
+    parser.add_argument(
+        "--modelo-openai",
         default="gpt-4o-mini",
-        help="Modelo de IA usado para o resumo executivo, quando OPENAI_API_KEY estiver definido.",
+        help="Modelo da OpenAI usado para o resumo, quando OPENAI_API_KEY estiver definido.",
     )
     return parser
 
@@ -45,7 +50,11 @@ def main(argv: list[str] | None = None) -> int:
 
     dados = carregar_planilhas(args.entradas)
     indicadores = calcular_indicadores(dados)
-    resumo = gerar_resumo(indicadores, modelo=args.modelo)
+    resumo = gerar_resumo(
+        indicadores,
+        modelo_gemini=args.modelo_gemini,
+        modelo_openai=args.modelo_openai,
+    )
     destino = exportar_excel(indicadores, resumo, args.saida)
 
     print(f"Relatorio gerado em: {destino}")

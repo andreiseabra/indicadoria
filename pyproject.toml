@@ -8,11 +8,13 @@ license = { text = "MIT" }
 dependencies = [
     "pandas>=2.0",
     "openpyxl>=3.1",
+    "python-dotenv>=1.0",
 ]
 
 [project.optional-dependencies]
-ia = ["openai>=1.0"]
+ia = ["google-genai>=1.0", "openai>=1.0"]
 dev = ["pytest>=8.0"]
+dashboard = ["streamlit>=1.35"]
 
 [project.scripts]
 indicadoria = "indicadoria.cli:main"
