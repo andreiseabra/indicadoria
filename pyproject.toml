@@ -1,0 +1,25 @@
+[project]
+name = "indicadoria"
+version = "0.1.0"
+description = "Automacao de indicadores e relatorios com apoio de IA, integrada a Excel e Power BI."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "pandas>=2.0",
+    "openpyxl>=3.1",
+]
+
+[project.optional-dependencies]
+ia = ["openai>=1.0"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+indicadoria = "indicadoria.cli:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
