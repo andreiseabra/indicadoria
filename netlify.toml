@@ -1,5 +1,6 @@
 # Deploy estático na Netlify: o index.html carrega o app via stlite (Streamlit no navegador).
 # Este arquivo tem prioridade sobre as configurações do painel da Netlify.
+# O "build" só copia para dist/ os arquivos que o navegador precisa buscar.
 [build]
-  publish = "."
-  command = "echo 'Site estatico (stlite): nada para compilar'"
+  publish = "dist"
+  command = "rm -rf dist && mkdir -p dist && cp -r index.html app.py src sample_data dist/"

@@ -45,7 +45,7 @@ Abre automaticamente em `http://localhost:8501`. Na tela é possível:
 
 O `index.html` publica o dashboard como site estático: o Streamlit roda direto no navegador do visitante via [stlite](https://github.com/whitphx/stlite) (Python em WebAssembly). É assim que o projeto fica no ar na Netlify, sem servidor Python.
 
-- O `netlify.toml` já configura o deploy (sem build, publicando a raiz do repositório).
+- O `netlify.toml` já configura o deploy: o "build" só copia para `dist/` os arquivos que o navegador busca (`index.html`, `app.py`, `src/` e `sample_data/`).
 - Na primeira visita o navegador baixa o Python, o que leva alguns segundos; depois fica em cache.
 - A opção "Usar planilha de exemplo" gera a planilha na hora, sem precisar versionar o `.xlsx`.
 - O resumo executivo usa sempre o **modo offline**: uma chave de IA nessa versão ficaria exposta para qualquer visitante. Para o resumo com IA, rode localmente (ou em um servidor) com o `.env` configurado.
