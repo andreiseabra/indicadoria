@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta
+      name="description"
+      content="IndicadorIA: automação de indicadores e relatórios a partir de planilhas Excel, pronta para o Power BI."
+    />
+    <title>IndicadorIA</title>
+    <!--
+      Versão estática do dashboard: o Streamlit roda no navegador via stlite (Pyodide/WebAssembly),
+      o que permite hospedar em serviços estáticos como a Netlify.
+      Nesta versão o resumo executivo usa sempre o modo offline: uma chave de IA
+      aqui ficaria exposta para qualquer visitante.
+    -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/browser@1.9.2/build/stlite.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import { mount } from 'https://cdn.jsdelivr.net/npm/@stlite/browser@1.9.2/build/stlite.js'
+
+      // Os arquivos Python são carregados do próprio repositório (sem duplicar código aqui).
+      // Ao criar um módulo novo em src/indicadoria, adicione-o nesta lista.
+      const files = [
+        'app.py',
+        'src/indicadoria/__init__.py',
+        'src/indicadoria/ai_summary.py',
+        'src/indicadoria/data.py',
+        'src/indicadoria/export.py',
+        'sample_data/gerar_exemplo.py',
+      ]
+
+      mount(
+        {
+          entrypoint: 'app.py',
+          requirements: ['pandas', 'openpyxl', 'python-dotenv'],
+          files: Object.fromEntries(files.map((path) => [path, { url: `./${path}` }])),
+          streamlitConfig: {
+            'client.toolbarMode': 'minimal',
+          },
+        },
+        document.getElementById('root'),
+      )
+    </script>
+  </body>
+</html>

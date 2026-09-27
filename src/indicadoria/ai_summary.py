@@ -9,6 +9,7 @@ para que o projeto rode fim-a-fim sem depender de credenciais externas.
 from __future__ import annotations
 
 import os
+import sys
 
 from dotenv import load_dotenv
 
@@ -61,10 +62,17 @@ def _resumo_fallback(indicadores: Indicadores) -> str:
                 f"- Ultimo mes apresentou {direcao} de {abs(variacao):.1f}% "
                 "em relacao ao mes anterior."
             )
-    linhas.append(
-        "- Configure GEMINI_API_KEY (gratuito) ou OPENAI_API_KEY no arquivo .env "
-        "para gerar um resumo mais detalhado com apoio de IA."
-    )
+    if sys.platform == "emscripten":
+        # Versao web (stlite): roda no navegador do visitante, sem chave de IA
+        linhas.append(
+            "- Esta e a versao de demonstracao no navegador. Rodando o projeto com uma "
+            "chave do Google Gemini, o resumo passa a ser escrito pela IA."
+        )
+    else:
+        linhas.append(
+            "- Configure GEMINI_API_KEY (gratuito) ou OPENAI_API_KEY no arquivo .env "
+            "para gerar um resumo mais detalhado com apoio de IA."
+        )
     return "\n".join(linhas)
 
 

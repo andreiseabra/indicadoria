@@ -5,15 +5,21 @@ Roda localmente com: streamlit run app.py
 
 from __future__ import annotations
 
+import sys
 import tempfile
 from pathlib import Path
 
 import pandas as pd
 import streamlit as st
 
-from indicadoria.ai_summary import gerar_resumo
-from indicadoria.data import calcular_indicadores, carregar_planilhas
-from indicadoria.export import exportar_excel
+RAIZ = Path(__file__).parent
+
+# Torna o pacote em src/ importavel sem `pip install -e .` (Streamlit Cloud, stlite, etc.)
+sys.path.insert(0, str(RAIZ / "src"))
+
+from indicadoria.ai_summary import gerar_resumo  # noqa: E402
+from indicadoria.data import calcular_indicadores, carregar_planilhas  # noqa: E402
+from indicadoria.export import exportar_excel  # noqa: E402
 
 st.set_page_config(page_title="IndicadorIA", layout="wide")
 
@@ -44,13 +50,14 @@ caminhos: list[Path] = []
 tmpdir = None
 
 if usar_exemplo:
-    exemplo = Path(__file__).parent / "sample_data" / "vendas_exemplo.xlsx"
-    if exemplo.exists():
-        caminhos = [exemplo]
-    else:
-        st.warning(
-            "Exemplo não encontrado. Rode `python sample_data/gerar_exemplo.py` primeiro."
-        )
+    exemplo = RAIZ / "sample_data" / "vendas_exemplo.xlsx"
+    if not exemplo.exists():
+        # Gera a planilha na primeira vez (o .xlsx nao e versionado)
+        sys.path.insert(0, str(RAIZ / "sample_data"))
+        from gerar_exemplo import gerar
+
+        gerar().to_excel(exemplo, index=False)
+    caminhos = [exemplo]
 elif arquivos:
     tmpdir = tempfile.TemporaryDirectory()
     for arquivo in arquivos:

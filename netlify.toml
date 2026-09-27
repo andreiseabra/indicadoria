@@ -1,0 +1,5 @@
+# Deploy estático na Netlify: o index.html carrega o app via stlite (Streamlit no navegador).
+# Este arquivo tem prioridade sobre as configurações do painel da Netlify.
+[build]
+  publish = "."
+  command = "echo 'Site estatico (stlite): nada para compilar'"

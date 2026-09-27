@@ -41,6 +41,23 @@ Abre automaticamente em `http://localhost:8501`. Na tela é possível:
 - Consultar a tabela de dados consolidados;
 - Clicar em **"Gerar Excel para Power BI"** e baixar o arquivo pronto direto pelo navegador.
 
+## Versão web (navegador, sem servidor)
+
+O `index.html` publica o dashboard como site estático: o Streamlit roda direto no navegador do visitante via [stlite](https://github.com/whitphx/stlite) (Python em WebAssembly). É assim que o projeto fica no ar na Netlify, sem servidor Python.
+
+- O `netlify.toml` já configura o deploy (sem build, publicando a raiz do repositório).
+- Na primeira visita o navegador baixa o Python, o que leva alguns segundos; depois fica em cache.
+- A opção "Usar planilha de exemplo" gera a planilha na hora, sem precisar versionar o `.xlsx`.
+- O resumo executivo usa sempre o **modo offline**: uma chave de IA nessa versão ficaria exposta para qualquer visitante. Para o resumo com IA, rode localmente (ou em um servidor) com o `.env` configurado.
+
+Para testar a versão web localmente:
+
+```bash
+python -m http.server 8000
+```
+
+Depois abra `http://localhost:8000`. Ao criar um módulo novo em `src/indicadoria`, inclua o arquivo na lista `files` do `index.html`.
+
 ## Como rodar — Linha de comando (CLI)
 
 Alternativa para uso em scripts, automações agendadas ou pipelines, sem interface gráfica.
